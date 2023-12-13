@@ -4,18 +4,17 @@ import java.awt.*;
 import java.util.Arrays;
 
 class GUI extends JFrame {
-    JPanel center;
     GUI(){
         new Database();
         setLayout(new BorderLayout());
         JPanel top = new JPanel();
         top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
-        center = new JPanel();
+        JPanel center = new JPanel();
         Border gray = BorderFactory.createLineBorder(Color.GRAY);
         center.setLayout(new GridLayout(0,4,0,1));
 
         addUser(top);
-        addContent(gray);
+        addContent(gray,center);
         selectUser(top);
 
         add(top,BorderLayout.NORTH);
@@ -25,7 +24,7 @@ class GUI extends JFrame {
         setSize(400,400);
         setVisible(true);
     }
-    void addContent(Border border){
+    void addContent(Border border,JPanel center){
         for(int i = 0; i < 4; i++){
             JPanel panel = new JPanel();
             panel.setBorder(border);

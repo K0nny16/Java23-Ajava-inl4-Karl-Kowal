@@ -34,7 +34,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-    void JSON (StringBuilder string) throws Exception {                     
+    void JSON (StringBuilder string) throws Exception {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(String.valueOf(string));
         JSONArray jsonArray = (JSONArray) obj;
