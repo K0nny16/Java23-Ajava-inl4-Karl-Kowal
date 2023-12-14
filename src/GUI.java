@@ -63,9 +63,8 @@ class GUI extends JFrame {
             String[] cities = unFormattedCities.split(",");
             Database.putRequest(username, cities);
         }
-        else {
+        else
             JOptionPane.showMessageDialog(null,"You have to fill in Username and Cities!");
-        }
     }
     static String getSelectedUser(){
         return selectedUser;
