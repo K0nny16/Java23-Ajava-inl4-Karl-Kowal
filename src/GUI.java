@@ -10,6 +10,7 @@ class GUI extends JFrame {
     static private String selectedUser;
     GUI(){
         new Database();
+        new WeatherAPI();
         setLayout(new BorderLayout());
         JPanel top = new JPanel();
         top.setLayout(new BoxLayout(top,BoxLayout.X_AXIS));
