@@ -1,13 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Objects;
 
 class GUI extends JFrame {
     static private String selectedUser;
+    static private String selectLocations;
     GUI(){
         new Database();
         new WeatherAPI();
@@ -31,13 +28,13 @@ class GUI extends JFrame {
         setVisible(true);
     }
     void addContent(Border border,JPanel center){
+        JPanel[] panels = new JPanel[4];
         for(int i = 0; i < 4; i++){
-            JPanel panel = new JPanel();
-            panel.setBorder(border);
+            panels[i].setBorder(border);
 
             //Väder
 
-            center.add(panel);
+            center.add(panels[i]);
         }
     }
     void addUser(JPanel panel){
@@ -54,6 +51,7 @@ class GUI extends JFrame {
     }
     void selectLocations(JPanel panel){
         JComboBox<String> locations = new JComboBox<>(Database.getLocations());
+        locations.addActionListener(e -> selectLocations = (String) locations.getSelectedItem());
         panel.add(locations);
     }
     void addMenu() {
@@ -68,6 +66,9 @@ class GUI extends JFrame {
     }
     static String getSelectedUser(){
         return selectedUser;
+    }
+    static String getSelectLocations(){
+        return selectLocations;
     }
 }
 
