@@ -15,6 +15,7 @@ class GUI extends JFrame {
         Border gray = BorderFactory.createLineBorder(Color.GRAY);
         center.setLayout(new GridLayout(0,4,0,1));
 
+        Database.getRequest();
         addUser(top);
         addContent(gray,center);
         selectUser(top);
@@ -28,19 +29,20 @@ class GUI extends JFrame {
         setVisible(true);
     }
     void addContent(Border border,JPanel center){
-        JPanel[] panels = new JPanel[4];
         for(int i = 0; i < 4; i++){
-            panels[i].setBorder(border);
+            JPanel panel = new JPanel();
+            panel.setBorder(border);
 
             //Väder
 
-            center.add(panels[i]);
+            center.add(panel);
         }
     }
     void addUser(JPanel panel){
         JButton addUser = new JButton("Add User");
         addUser.addActionListener(e -> addMenu());
         panel.add(addUser);
+        Database.getRequest();
     }
     void selectUser(JPanel panel){
         JComboBox<String> users = new JComboBox<>(Database.getNames());

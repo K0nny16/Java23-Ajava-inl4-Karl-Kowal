@@ -11,10 +11,7 @@ public class Database {
     private static List<String[]> data = new ArrayList<>();
     private static HashMap<String,String[]> hashData = new HashMap<>();
 
-    Database(){
-        getRequest();
-    }
-    void getRequest() {
+    static void getRequest() {
         try {
             URL url = new URL(baseURL + ".json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -42,19 +39,29 @@ public class Database {
             connection.setRequestMethod("PUT");
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type","application/json");
-            Map<String,Object> dataMap = new HashMap<>();                                   //Gör om hashmapen till en map eftersom att JSONObeject kan ta map men inte hashmap. Eller den kan men får att det kan ge compilerings fel.
-            dataMap.put(user,cities);
+            HashMap<String,String[]> dataMap = new HashMap<>();                                   //Gör om hashmapen till en map eftersom att JSONObeject kan ta map men inte hashmap. Eller den kan men får att det kan ge compilerings fel.
+            //dataMap.put(user,cities);
+            dataMap.put(user, new String[]{ "hej" ,"san","Alrik" });
             JSONObject jsonData = new JSONObject(dataMap);
+            System.out.println(Arrays.deepToString(new Object[]{jsonData.get("Karl")}));
 
             try(DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
-                os.write(jsonData.toJSONString().getBytes());
+               // os.write(jsonData.toJSONString().getBytes());
+               
+                os.write(
+
+                       "{  \"Karl\": [ {\"Malmö\":\"hej\"} , {\"Göteborg\":\"hej\"}  ]} ".getBytes()
+                );
                 os.flush();                                                             //Ser till att alla data är skriven innan streamen stängs.
 
-                int responeseCode = connection.getResponseCode();
-                if(responeseCode == HttpURLConnection.HTTP_OK)
+                int responseCode = connection.getResponseCode();
+                if(responseCode == HttpURLConnection.HTTP_OK)
                     System.out.println("Data pushed to Firebase.");                     //Kollar så att min push gick igenom.
-                else
-                    System.out.println("Error code: "+responeseCode);
+                else{
+                    System.out.println(Arrays.deepToString(cities));
+                    System.out.println("Error code: "+responseCode);
+                    System.out.println("Response message: "+connection.getResponseMessage());
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -62,7 +69,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-    void JSON(StringBuilder string) throws Exception {
+   private static void JSON(StringBuilder string) throws Exception {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(String.valueOf(string));              //Gör stringen från StringBuilder till ett objekt.
         JSONObject jsonObject = (JSONObject) obj;                       //Gör om objektet till ett json objekt.
