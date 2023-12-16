@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,18 +41,11 @@ public class Database {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type","application/json");
             HashMap<String,String[]> dataMap = new HashMap<>();                                   //Gör om hashmapen till en map eftersom att JSONObeject kan ta map men inte hashmap. Eller den kan men får att det kan ge compilerings fel.
-            //dataMap.put(user,cities);
-            dataMap.put(user, new String[]{ "hej" ,"san","Alrik" });
-            JSONObject jsonData = new JSONObject(dataMap);
-            System.out.println(Arrays.deepToString(new Object[]{jsonData.get("Karl")}));
+            dataMap.put(user,cities);
+            String jsonData = new Gson().toJson(dataMap);
 
             try(DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
-               // os.write(jsonData.toJSONString().getBytes());
-               
-                os.write(
-
-                       "{  \"Karl\": [ {\"Malmö\":\"hej\"} , {\"Göteborg\":\"hej\"}  ]} ".getBytes()
-                );
+                os.write(jsonData.getBytes());
                 os.flush();                                                             //Ser till att alla data är skriven innan streamen stängs.
 
                 int responseCode = connection.getResponseCode();
@@ -83,18 +77,16 @@ public class Database {
            hashData.put(user, cities);                                  //Sedan sätter vi user som key och cities som valuen.
            data.add(new String[]{user, Arrays.toString(cities)});       //Backup lägger till använder och citiesen i en array där jag har använderen på index 0 följt av cities.
         }
-    }
+   }
     static String[] getNames(){
         return hashData.keySet().toArray(new String[0]);                //Tar ut alla keys fårn hashmappen.
     }
     static String[] getLocations() {
-        String[] values = new String[0];
-        for(String key : hashData.keySet()){
-            if(key.equalsIgnoreCase(GUI.getSelectedUser())){            //Tar stringen fån profilen som blev klickad jämför med samtiliga nycklar och tar sedan ut värdet av den nyckel när den hittar rätt.
-                values = hashData.get(key);
-            }
-        }
-        return values;
-    }
+        if(GUI.getSelectedUser() != null)
+            for(Map.Entry<String,String[]> keyValue : hashData.entrySet())               //Map mer dynamisk. Kan bytas till Hash.
+                if(keyValue.getKey().equalsIgnoreCase(GUI.getSelectedUser()))           //Tar stringen fån profilen som blev klickad jämför med samtiliga nycklar och tar sedan ut värdet av den nyckel när den hittar rätt.
+                    return keyValue.getValue();
+        return new String[0];
+   }
 }
 

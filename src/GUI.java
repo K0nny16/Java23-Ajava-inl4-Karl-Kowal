@@ -6,7 +6,6 @@ class GUI extends JFrame {
     static private String selectedUser;
     static private String selectLocations;
     GUI(){
-        new Database();
         new WeatherAPI();
         setLayout(new BorderLayout());
         JPanel top = new JPanel();
@@ -42,19 +41,21 @@ class GUI extends JFrame {
         JButton addUser = new JButton("Add User");
         addUser.addActionListener(e -> addMenu());
         panel.add(addUser);
-        Database.getRequest();
+
     }
     void selectUser(JPanel panel){
         JComboBox<String> users = new JComboBox<>(Database.getNames());
         users.addActionListener(e -> selectedUser = (String) users.getSelectedItem());
         panel.add(users);
-        panel.revalidate();
-        panel.repaint();
     }
     void selectLocations(JPanel panel){
-        JComboBox<String> locations = new JComboBox<>(Database.getLocations());
-        locations.addActionListener(e -> selectLocations = (String) locations.getSelectedItem());
+        JComboBox<String[]> locations = new JComboBox<>();
         panel.add(locations);
+        locations.addActionListener(e -> {
+            selectLocations = (String) locations.getSelectedItem();
+            String[] userLocations = Database.getLocations();
+            locations.addItem(userLocations);
+        });
     }
     void addMenu() {
         String username = JOptionPane.showInputDialog("Enter your profile name:");
@@ -62,6 +63,7 @@ class GUI extends JFrame {
         if ((username != null && !username.isEmpty()) && (unFormattedCities != null && !unFormattedCities.isEmpty())){
             String[] cities = unFormattedCities.split(",");
             Database.putRequest(username, cities);
+            Database.getRequest();
         }
         else
             JOptionPane.showMessageDialog(null,"You have to fill in Username and Cities!");
