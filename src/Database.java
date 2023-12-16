@@ -7,17 +7,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-public class Database {
+class Database {
     private static final String baseURL = "https://api-och-firebase-default-rtdb.europe-west1.firebasedatabase.app/";
     private static List<String[]> data = new ArrayList<>();
     private static HashMap<String,String[]> hashData = new HashMap<>();
-
     static void getRequest() {
         try {
             URL url = new URL(baseURL + ".json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -29,6 +27,7 @@ public class Database {
                 JSON(response);
             } else
                 System.out.println("Error response code: " + responseCode);
+            connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,20 +41,18 @@ public class Database {
             connection.setRequestProperty("Content-Type","application/json");
             HashMap<String,String[]> dataMap = new HashMap<>();                                   //Gör om hashmapen till en map eftersom att JSONObeject kan ta map men inte hashmap. Eller den kan men får att det kan ge compilerings fel.
             dataMap.put(user,cities);
-            String jsonData = new Gson().toJson(dataMap);
-
+            String jsonData = new Gson().toJson(dataMap);                                        //Gör om objektet till en json string.
             try(DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
                 os.write(jsonData.getBytes());
                 os.flush();                                                             //Ser till att alla data är skriven innan streamen stängs.
-
                 int responseCode = connection.getResponseCode();
                 if(responseCode == HttpURLConnection.HTTP_OK)
-                    System.out.println("Data pushed to Firebase.");                     //Kollar så att min push gick igenom.
+                    System.out.println("Data pushed to Firebase.");
                 else{
-                    System.out.println(Arrays.deepToString(cities));
                     System.out.println("Error code: "+responseCode);
                     System.out.println("Response message: "+connection.getResponseMessage());
                 }
+                connection.disconnect();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

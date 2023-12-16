@@ -14,7 +14,6 @@ class GUI extends JFrame {
         Border gray = BorderFactory.createLineBorder(Color.GRAY);
         center.setLayout(new GridLayout(0,4,0,1));
 
-        Database.getRequest();
         addUser(top);
         addContent(gray,center);
         selectUser(top);
