@@ -1,13 +1,13 @@
+import com.google.gson.*;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 class WeatherAPI {
-   static void APICall(String city){
-       String key = "6e86d40c1ccec69010c71630afb27d8c";
+   static String getLL(URL url){
        try{
-           URL url = new URL("http://api.openweathermap.org/geo/1.0/direct?q="+city+"&limit=5&appid="+key);
            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
            connection.setRequestMethod("GET");
            int responseCode = connection.getResponseCode();
@@ -18,11 +18,7 @@ class WeatherAPI {
                while((line = reader.readLine()) != null)
                    response.append(line);
                reader.close();
-
-
-
-
-
+               return response.toString();
            }
            else
                System.out.println("Error response code: "+responseCode);
@@ -30,5 +26,18 @@ class WeatherAPI {
        }catch (Exception e){
            e.printStackTrace();
        }
+       return "";
    }
+    static double[] geoJson(String jsonString) {
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
+        City city = gson.fromJson(jsonString.substring(1,jsonString.length()-1), City.class);
+        return new double[]{city.lat, city.lon};
+    }
+}
+class City{
+    String name;
+    double lon;
+    double lat;
 }
