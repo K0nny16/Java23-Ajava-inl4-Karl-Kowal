@@ -50,9 +50,7 @@ class GUI extends JFrame {
         if (city != null && !city.isEmpty()){
             String response = WeatherAPI.getLL(new URL("http://api.openweathermap.org/geo/1.0/direct?q="+city+",se&limit=1&appid=6e86d40c1ccec69010c71630afb27d8c"));
             double[] coords = WeatherAPI.geoJson(response);
-            System.out.println(coords[0]);
             String weatherResponse = WeatherAPI.getLL(new URL("https://api.openweathermap.org/data/3.0/onecall?lat="+coords[0]+"&lon="+coords[1]+"&exclude=&appid=6e86d40c1ccec69010c71630afb27d8c"));
-
         }
         else
             JOptionPane.showMessageDialog(null,"Error!");
