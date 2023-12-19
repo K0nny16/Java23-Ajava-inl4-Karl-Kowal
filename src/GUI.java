@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.Arrays;
 class GUI extends JFrame {
     GUI(){
+        ImageIcon img = new ImageIcon("programIcon.jpg");
+        setIconImage(img.getImage());
         setLayout(new BorderLayout());
         JPanel top = new JPanel();
         JPanel placeHolder = new JPanel();
@@ -76,7 +78,6 @@ class GUI extends JFrame {
                 double[] coords = WeatherAPI.geoJson(response);
                 String weatherResponse = WeatherAPI.apiCall(new URL("https://api.openweathermap.org/data/2.5/weather?lat="+coords[0]+"&lon="+coords[1]+"&appid=6e86d40c1ccec69010c71630afb27d8c&units=metric&lang=sv"));
                 String[] weatherData = WeatherAPI.weatherJson(weatherResponse);
-                System.out.println(Arrays.toString(weatherData));
                 addContent(weatherData);
             }catch (Exception e){
                 e.printStackTrace();

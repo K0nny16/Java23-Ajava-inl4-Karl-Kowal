@@ -30,11 +30,10 @@ class WeatherAPI {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         City city = gson.fromJson(jsonString.substring(1,jsonString.length()-1),City.class);
-        return new double[]{city.lat, city.lon};
+        return city.getLatLon();
     }
     static String[] weatherJson(String jsonString) {
         GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();                                                                                            //Gör det lättare att se och tolka Json filen ifall den skrivs ut i consolen.
         Gson gson = builder.create();
         WeatherData weatherData = gson.fromJson(jsonString, WeatherData.class);                                                 //Parsar json stringen till objektet av klassen WeatherData.
         WeatherInfo weather = weatherData.weather[0];                                                                            //Hämtar ut det första elementet i arrayen.
@@ -47,8 +46,11 @@ class WeatherAPI {
     }
 }
 class City{
-    double lat;         //Latitud.
-    double lon;         //Longitud.
+    private double lat;         //Latitud.
+    private double lon;         //Longitud.
+    double[] getLatLon(){
+        return new double[]{lat,lon};
+    }
 }
 class WeatherData {
     WeatherInfo[] weather;
