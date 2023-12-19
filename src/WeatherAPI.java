@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 class WeatherAPI {
-    static String getLL(URL url){
+    static String apiCall(URL url){
         try{
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -34,17 +34,16 @@ class WeatherAPI {
     }
     static String[] weatherJson(String jsonString) {
         GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();                                                                      //Gör det lättare att se och tolka Json filen ifall den skrivs ut i consolen.
+        builder.setPrettyPrinting();                                                                                            //Gör det lättare att se och tolka Json filen ifall den skrivs ut i consolen.
         Gson gson = builder.create();
-        WeatherData weatherData = gson.fromJson(jsonString, WeatherData.class);                          //Parsar json stringen till objektet av klassen WeatherData.
-        WeatherInfo weather = weatherData.weather[0];                                                   //Hämtar ut det första elementet i arrayen.
-        return new String[]{weatherData.name,                                                           //index 0 namn på stad
+        WeatherData weatherData = gson.fromJson(jsonString, WeatherData.class);                                                 //Parsar json stringen till objektet av klassen WeatherData.
+        WeatherInfo weather = weatherData.weather[0];                                                                            //Hämtar ut det första elementet i arrayen.
+        return new String[]{weatherData.name,                                                                                   //index 0 namn på stad
                 weatherData.weather[0].description.substring(0,1).toUpperCase()+weatherData.weather[0].description.substring(1), //index 1 beskrivning av väder.
-                weatherData.main.temp +" degrees celsius",                                               //Index2 Tempratur
-                "Feels like: "+ weatherData.main.feels_like +" degrees celsius",                         //Index3 Vilken tempratur det känns som.
-                "Windspeed:"+weatherData.wind.speed+"M/S",                                               //Index4 Vindhastighet.
-                weather.icon};                                                                           //Index5 Icon för import.
-
+                weatherData.main.temp +" degrees celsius",                                                                      //Index2 Tempratur
+                "Feels like: "+ weatherData.main.feels_like +" degrees celsius",                                                //Index3 Vilken tempratur det känns som.
+                "Windspeed:"+weatherData.wind.speed+"M/S",                                                                      //Index4 Vindhastighet.
+                weather.icon};                                                                                                  //Index5 Icon för import.
     }
 }
 class City{
