@@ -23,34 +23,42 @@ class GUI extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    void addContent(String[] data){
+    void addContent(String[] weatherData) {
         Border gray = BorderFactory.createLineBorder(Color.GRAY);
         JPanel center = new JPanel();
-        center.setLayout(new BorderLayout());
+        center.setLayout(new GridBagLayout());
         center.setBorder(gray);
         Color mainPanel = Color.decode("#FFA756");
         center.setBackground(mainPanel);
-        try{
-            BufferedImage image = ImageIO.read(new URL("https://openweathermap.org/img/wn/"+data[5]+"@2x.png"));
-            if(image != null){
-                Image resizedImg = image.getScaledInstance(120,120,Image.SCALE_SMOOTH);
+        try {
+            BufferedImage image = ImageIO.read(new URL("https://openweathermap.org/img/wn/" + weatherData[5] + "@2x.png"));
+            if (image != null) {
+                GridBagConstraints gbc = new GridBagConstraints();
+                Image resizedImg = image.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
                 JLabel pic = new JLabel(new ImageIcon(resizedImg));
+                gbc.gridx = 0;                                              //Först kolumn.
+                gbc.gridy = 0;                                              //Först raden (allt detta är för bilden.)
+                gbc.gridheight = GridBagConstraints.REMAINDER;              //REMAINDER = fyller alla lediga celler.
+                gbc.insets = new Insets(0,0,0,5);                           //Lägger till padding 5px på alla sidor.
+                center.add(pic, gbc);
                 JPanel textPanel = new JPanel();
                 textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
                 textPanel.setBackground(mainPanel);
-                for(int i = 0; i < data.length-1; i++){
-                    JLabel text = new JLabel(data[i]);
-                    text.setFont(new Font("Arial",Font.BOLD,16));
+                for (int i = 0; i < weatherData.length - 1; i++) {
+                    JLabel text = new JLabel(weatherData[i]);
+                    text.setFont(new Font("Arial", Font.BOLD, 16));
                     textPanel.add(text);
                 }
-                center.add(textPanel, BorderLayout.NORTH);
-                center.add(pic,BorderLayout.CENTER);
-                add(center,BorderLayout.CENTER);
+                gbc.gridx = 1;                                              //Vilken kolumn i detta fallet den höger om.
+                gbc.gridy = 0;                                              //Samma rad.
+                gbc.gridheight = 1;                                         //Hur många grids den för ockupera
+                center.add(textPanel, gbc);
+                add(center, BorderLayout.CENTER);
                 revalidate();
-            }
-            else
+            } else {
                 System.out.println("Error");
-        }catch (Exception e){
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
