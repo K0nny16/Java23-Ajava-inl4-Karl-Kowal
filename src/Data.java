@@ -6,24 +6,49 @@ class City{
     }
 }
 class WeatherData {
+    public String getWeatherDescription() {
+        return weather[0].description;
+    }
+    public String getIcon() {
+        return weather[0].icon;
+    }
+    public double getTemp() {
+        return main.temp;
+    }
+    public double getHumidity() {
+        return main.humidity;
+    }
+    public String getName() {
+        return name;
+    }
+    public double getWind() {
+        return wind.speed;
+    }
+    String getCountry(){
+        return sys.country;
+    }
+    double getFeelsLike(){
+        return main.feels_like;
+    }
     WeatherInfo[] weather;
     Temperatur main;          //Matchar med det i WeatherData som har samma namn (exempel).
     String name;             //Kan se denna som key / value ? (Objektet = key / datan i den = value).
     Wind wind;
     Country sys;
+    static class WeatherInfo {
+        private String description; //Beskrivning.
+        private String icon;        //Icon.
+    }
+    static class Temperatur {
+        private double temp;        //Grader.
+        private double feels_like;  //Vad det känns som.
+        private double humidity;
+    }
+    static class Wind{
+        private double speed;      //Vind hastighet.
+    }
+    static class Country{
+        private String country;
+    }
 }
-class WeatherInfo {
-    String description; //Beskrivning.
-    String icon;        //Icon.
-}
-class Temperatur {
-    double temp;        //Grader.
-    double feels_like;  //Vad det känns som.
-    double humidity;
-}
-class Wind{
-    double speed;      //Vind hastighet.
-}
-class Country{
-    String country;
-}
+
