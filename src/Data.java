@@ -26,7 +26,6 @@ class WeatherData {
     static class Country{
         private String country;
     }
-    //-------------------------------------------------//
     public String getWeatherDescription() {
         return weather[0].description;
     }

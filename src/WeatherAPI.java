@@ -37,9 +37,9 @@ class WeatherAPI {
         Gson gson = builder.create();
         WeatherData weatherData = gson.fromJson(jsonString, WeatherData.class);                                                     //Parsar json stringen till objektet av klassen WeatherData.//Hämtar ut det första elementet i arrayen.
         return new String[]{"Location: "+weatherData.getName()+", "+weatherData.getCountry(),                                       //index 0 namn på stad
-                weatherData.getWeatherDescription().substring(0,1).toUpperCase()+weatherData.getWeatherDescription().substring(1), //index 1 beskrivning av väder.
+                weatherData.getWeatherDescription().substring(0,1).toUpperCase()+weatherData.getWeatherDescription().substring(1),  //index 1 beskrivning av väder.
                 weatherData.getTemp() +"° Celsius.",                                                                                //Index2 Tempratur
-                "Feels Like: "+ weatherData.getFeelsLike() +"° Celsius.",                                                          //Index3 Vilken tempratur det känns som.
+                "Feels Like: "+ weatherData.getFeelsLike() +"° Celsius.",                                                           //Index3 Vilken tempratur det känns som.
                 "Windspeed: "+weatherData.getWind()+" M/S.",                                                                        //Index4 Vindhastighet.
                 "Humidity: "+weatherData.getHumidity()+"%",                                                                         //Index5 luftfuktighet.
                 weatherData.getIcon()};                                                                                             //Index6 Icon för import. Ska alltid vara sist!

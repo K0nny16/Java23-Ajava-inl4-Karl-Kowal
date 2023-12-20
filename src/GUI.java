@@ -19,7 +19,6 @@ class GUI extends JFrame {
         top.setLayout(new FlowLayout());
 
         selectCity(top,center);
-
         add(top,BorderLayout.NORTH);
         setTitle("Weather App");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -60,9 +59,8 @@ class GUI extends JFrame {
                 add(center, BorderLayout.CENTER);
                 revalidate();
                 repaint();
-            } else {
+            } else
                 System.out.println("Error");
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,9 +76,9 @@ class GUI extends JFrame {
         if (city != null && !city.isEmpty()){
             try{
                 String response = WeatherAPI.apiCall(new URL("http://api.openweathermap.org/geo/1.0/direct?q="+city+"&limit=1&appid=6e86d40c1ccec69010c71630afb27d8c"));
-                double[] coords = WeatherAPI.geoJson(response);
+                double[] coords = WeatherAPI.geoJson(response);//39 ???
                 String weatherResponse = WeatherAPI.apiCall(new URL("https://api.openweathermap.org/data/2.5/weather?lat="+coords[0]+"&lon="+coords[1]+"&appid=6e86d40c1ccec69010c71630afb27d8c&units=metric&lang=en"));
-                String[] weatherData = WeatherAPI.weatherJson(weatherResponse);
+                String[] weatherData = WeatherAPI.weatherJson(weatherResponse); //4,6???
                 addContent(weatherData,center);
             }catch (Exception e){
                 e.printStackTrace();
@@ -90,5 +88,3 @@ class GUI extends JFrame {
             JOptionPane.showMessageDialog(null,"Error!");
     }
 }
-
-
