@@ -33,8 +33,9 @@ class GUI extends JFrame {
         center.setLayout(new GridBagLayout());
         Color mainPanel = Color.decode("#FFA756");
         center.setBackground(mainPanel);
+        int length = weatherData.length-1;
         try {
-            BufferedImage image = ImageIO.read(new URL("https://openweathermap.org/img/wn/" + weatherData[weatherData.length-1] + "@2x.png"));
+            BufferedImage image = ImageIO.read(new URL("https://openweathermap.org/img/wn/" + weatherData[length] + "@2x.png"));
             if (image != null) {
                 GridBagConstraints gbc = new GridBagConstraints();
                 Image resizedImg = image.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
@@ -47,7 +48,7 @@ class GUI extends JFrame {
                 JPanel textPanel = new JPanel();
                 textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
                 textPanel.setBackground(mainPanel);
-                for (int i = 0; i < weatherData.length - 1; i++) {
+                for (int i = 0; i < length; i++) {
                     JLabel text = new JLabel(weatherData[i]);
                     text.setFont(new Font("Arial", Font.BOLD, 16));
                     textPanel.add(text);
