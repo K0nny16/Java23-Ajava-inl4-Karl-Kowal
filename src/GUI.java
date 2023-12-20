@@ -4,31 +4,34 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-
 class GUI extends JFrame {
     GUI(){
         ImageIcon img = new ImageIcon("programIcon.jpg");
         setIconImage(img.getImage());
         setLayout(new BorderLayout());
+
+        JPanel center = new JPanel();
+        center.setBackground(Color.decode("#FFA756"));
+        center.setLayout(new GridLayout());
+        center.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
         JPanel top = new JPanel();
-        JPanel placeHolder = new JPanel();
-        placeHolder.setBackground(Color.decode("#FFA756"));
         top.setBackground(Color.decode("#949494"));
         top.setLayout(new FlowLayout());
-        selectCity(top);
+
+        selectCity(top,center);
+
         add(top,BorderLayout.NORTH);
         setTitle("Weather App");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800,800);
-        add(placeHolder, BorderLayout.CENTER);
+        add(center, BorderLayout.CENTER);
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    void addContent(String[] weatherData) {
-        Border gray = BorderFactory.createLineBorder(Color.GRAY);
-        JPanel center = new JPanel();
+    void addContent(String[] weatherData,JPanel center) {
+        center.removeAll();
         center.setLayout(new GridBagLayout());
-        center.setBorder(gray);
         Color mainPanel = Color.decode("#FFA756");
         center.setBackground(mainPanel);
         try {
@@ -56,6 +59,7 @@ class GUI extends JFrame {
                 center.add(textPanel, gbc);
                 add(center, BorderLayout.CENTER);
                 revalidate();
+                repaint();
             } else {
                 System.out.println("Error");
             }
@@ -63,13 +67,13 @@ class GUI extends JFrame {
             e.printStackTrace();
         }
     }
-    void selectCity(JPanel panel){
+    void selectCity(JPanel panel,JPanel center){
         JButton addUser = new JButton("Pick city!");
-        addUser.addActionListener(e -> addCity());
+        addUser.addActionListener(e -> addCity(center));
         addUser.setFocusable(false);
         panel.add(addUser);
     }
-    void addCity(){
+    void addCity(JPanel center){
         String city = JOptionPane.showInputDialog("What city do you want the weather of? \n ex Malmö,Trelleborg,Svedala,Ystad");
         if (city != null && !city.isEmpty()){
             try{
@@ -77,7 +81,7 @@ class GUI extends JFrame {
                 double[] coords = WeatherAPI.geoJson(response);
                 String weatherResponse = WeatherAPI.apiCall(new URL("https://api.openweathermap.org/data/2.5/weather?lat="+coords[0]+"&lon="+coords[1]+"&appid=6e86d40c1ccec69010c71630afb27d8c&units=metric&lang=en"));
                 String[] weatherData = WeatherAPI.weatherJson(weatherResponse);
-                addContent(weatherData);
+                addContent(weatherData,center);
             }catch (Exception e){
                 e.printStackTrace();
             }
