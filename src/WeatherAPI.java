@@ -71,3 +71,4 @@ class Temperatur {
 class Wind{
     double speed;      //Vind hastighet.
 }
+//TODO Kapsulering zZzZZzzZZ
