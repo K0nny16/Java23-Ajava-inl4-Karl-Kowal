@@ -1,8 +1,8 @@
 class City{
-    private double lat;         //Latitud.
-    private double lon;         //Longitud.
-    double[] getLatLon(){
-        return new double[]{lat,lon};
+    private float lat;         //Latitud.
+    private float lon;         //Longitud.
+    float[] getLatLon(){
+        return new float[]{lat,lon};
     }
 }
 class WeatherData {

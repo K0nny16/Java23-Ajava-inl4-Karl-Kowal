@@ -26,7 +26,7 @@ class WeatherAPI {
         }
         return "";
     }
-    static double[] geoJson(String jsonString) {
+    static float[] geoJson(String jsonString) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         City city = gson.fromJson(jsonString.substring(1,jsonString.length()-1),City.class);

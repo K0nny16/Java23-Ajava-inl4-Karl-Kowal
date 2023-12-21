@@ -76,9 +76,9 @@ class GUI extends JFrame {
         if (city != null && !city.isEmpty()){
             try{
                 String response = WeatherAPI.apiCall(new URL("http://api.openweathermap.org/geo/1.0/direct?q="+city+"&limit=1&appid=6e86d40c1ccec69010c71630afb27d8c"));
-                double[] coords = WeatherAPI.geoJson(response);//39 ???
+                float[] coords = WeatherAPI.geoJson(response);
                 String weatherResponse = WeatherAPI.apiCall(new URL("https://api.openweathermap.org/data/2.5/weather?lat="+coords[0]+"&lon="+coords[1]+"&appid=6e86d40c1ccec69010c71630afb27d8c&units=metric&lang=en"));
-                String[] weatherData = WeatherAPI.weatherJson(weatherResponse); //4,6???
+                String[] weatherData = WeatherAPI.weatherJson(weatherResponse);
                 addContent(weatherData,center);
             }catch (Exception e){
                 e.printStackTrace();
